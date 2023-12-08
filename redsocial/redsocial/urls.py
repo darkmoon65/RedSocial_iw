@@ -20,17 +20,22 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from rest_framework import routers
-from apps.amistad.views import AmistadViewSet
 from apps.usuarios.views import UsuarioViewSet
+from apps.publicaciones import views
 
 router = routers.DefaultRouter()
-router.register(r'amistad', AmistadViewSet, basename='amistad')
 router.register(r'usuario', UsuarioViewSet, basename='usuario')
 
 urlpatterns = [
     path('', include(router.urls)),
-    #path('admin/', admin.site.urls),
-    path('api/', include('rest_framework.urls', namespace='rest_framework'))
+    path('publicacion/', views.publicacion_list),
+    path('publicacion/<int:pk>/', views.publicacion_detail),
+    path('publicacionComentario/', views.publicacionComentario_list),
+    path('publicacionComentario/<int:pk>/', views.publicacionComentario_detail),
+    path('publicacionFile/', views.publicacionFile_list),
+    path('publicacionFile/<int:pk>/', views.publicacionFile_detail),
+    path('publicacionReaccion/', views.publicacionReaccion_list),
+    path('publicacionReaccion/<int:pk>/', views.publicacionReaccion_detail),
 ]
 
 if settings.DEBUG:
