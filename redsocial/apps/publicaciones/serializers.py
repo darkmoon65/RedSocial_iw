@@ -3,9 +3,10 @@ from .models.Publicacion import Publicacion
 from .models.PublicacionComentario import PublicacionComentario
 from .models.PublicacionFile import PublicacionFile
 from .models.PublicacionReaccion import PublicacionReaccion
-
+from apps.usuarios.serializer import UsuarioSerializer
 
 class PublicacionSerializer(serializers.ModelSerializer):
+    usuario = UsuarioSerializer()
     class Meta:
         model = Publicacion
         fields = ['id', 'usuario', 'fecha', 'descripcion']
