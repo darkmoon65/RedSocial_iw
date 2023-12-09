@@ -7,6 +7,7 @@ from rest_framework.parsers import JSONParser
 from django.contrib.auth import authenticate, login
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .authSerializer import MyTokenObtainPairSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 
 @csrf_exempt
 def usuario_list(request):
@@ -38,7 +39,21 @@ def user_login(request):
         user = Usuario.objects.get(email=data['correo'])
 
         if (user.passw == data['contrasena']):
-            return JsonResponse({'message': 'ok'}, status=201)
+            refresh = RefreshToken.for_user(user)
+            print(refresh.access_token)
+            return JsonResponse({'message': 'ok', 'access': str(refresh.access_token), 'email': user.email}, status=201)
         return JsonResponse({'message': 'error'}, status=400)
 
 
+@csrf_exempt
+def get_user_by_email(request):
+
+    if request.method == 'POST':
+
+        data = JSONParser().parse(request)
+        user = Usuario.objects.get(email=data['correo'])
+
+        if (user):
+            serializer = UsuarioSerializer(user)
+            return JsonResponse({'message': 'ok', 'user': serializer.data}, status=201)
+        return JsonResponse({'message': 'error'}, status=400)

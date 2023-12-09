@@ -11,6 +11,8 @@ from .models.PublicacionFile import PublicacionFile
 from .serializers import PublicacionFileSerializer
 from .models.PublicacionReaccion import PublicacionReaccion
 from .serializers import PublicacionReaccionSerializer
+from apps.usuarios.serializer import UsuarioSerializer
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 @csrf_exempt
 def publicacion_list(request):
@@ -118,8 +120,19 @@ def publicacionFile_list(request):
         return JsonResponse(serializer.data, safe=False)
 
     elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = PublicacionFileSerializer(data=data)
+
+        media_file = request.FILES['media']
+        print(media_file)
+        publicacion = request.POST.get('publicacion', '')
+        tipo = request.POST.get('tipo', '')
+
+        serializer_data = {
+            'media': SimpleUploadedFile(media_file.name, media_file.read(), media_file.content_type),
+            'publicacion': publicacion,
+            'tipo': tipo
+        }
+        # data = JSONParser().parse(request)
+        serializer = PublicacionFileSerializer(data=serializer_data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser, PermissionsMixin
 
 # defailt blank=False, null=False -> no puede ser vacio, obligatorio
 
@@ -9,7 +10,7 @@ GENEROS = [
 ]
 
 class Usuario(models.Model):
-    email           = models.EmailField(max_length=155, unique=True)
+    email           = models.EmailField(max_length=155)
     nombre          = models.CharField(max_length=155)
     apellidos       = models.CharField(max_length=155)
     fecha_reg       = models.DateTimeField(editable=False, auto_now_add=True) 

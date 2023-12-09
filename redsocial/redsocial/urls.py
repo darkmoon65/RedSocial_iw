@@ -27,6 +27,7 @@ from apps.publicaciones import views
 urlpatterns = [
     path('login/', viewsUser.user_login),
     path('usuarios/', viewsUser.usuario_list),
+    path('usuario/', viewsUser.get_user_by_email),
     path('publicacion/', views.publicacion_list),
     path('publicacion/<int:pk>/', views.publicacion_detail),
     path('publicacionComentario/', views.publicacionComentario_list),
