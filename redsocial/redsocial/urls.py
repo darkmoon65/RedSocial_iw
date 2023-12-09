@@ -20,14 +20,13 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from rest_framework import routers
-from apps.usuarios.views import UsuarioViewSet
+from apps.usuarios import views as viewsUser
 from apps.publicaciones import views
 
-router = routers.DefaultRouter()
-router.register(r'usuario', UsuarioViewSet, basename='usuario')
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('login/', viewsUser.user_login),
+    path('usuarios/', viewsUser.usuario_list),
     path('publicacion/', views.publicacion_list),
     path('publicacion/<int:pk>/', views.publicacion_detail),
     path('publicacionComentario/', views.publicacionComentario_list),
